@@ -1,0 +1,24 @@
+---
+- hosts: centos
+  remote_user: kartik
+  sudo: true
+
+  tasks:
+
+   - name: Delete, if resultant file aready exists
+     file:
+       path: /home/kartik/Ansible/space_result.txt
+       state: absent
+   
+   - name: Copy local script on  remote node
+     copy:
+       src:  ~/Ansible/VM/monitor/space.sh
+       dest: /home/kartik/space.sh
+       owner: kartik
+       mode: 0744
+
+   - name: Run that script
+     shell: /home/kartik/space.sh > space_result.txt
+     args:
+       chdir: /home/kartik/Ansible/
+       creates: space_result.txt
